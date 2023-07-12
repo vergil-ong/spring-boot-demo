@@ -1,0 +1,9 @@
+spring:
+  profiles:
+    active: local
+
+server:
+  port: 8001
+  servlet:
+    encoding:
+      charset: utf-8

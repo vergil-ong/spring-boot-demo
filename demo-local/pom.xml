@@ -16,4 +16,11 @@
         <maven.compiler.target>11</maven.compiler.target>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.github.ong</groupId>
+            <artifactId>demo-core</artifactId>
+        </dependency>
+    </dependencies>
+
 </project>
