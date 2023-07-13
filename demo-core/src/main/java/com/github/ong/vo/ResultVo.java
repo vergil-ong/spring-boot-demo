@@ -12,9 +12,13 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ResultVo {
 
-    public static final Integer SUCCESS_STATUS = 200;
+    public static final Integer STATUS_SUCCESS = 200;
 
-    public static final ResultVo SUCCESS = new ResultVo(SUCCESS_STATUS, StringUtil.BLANK, null);
+    public static final Integer STATUS_ERROR = 500;
+
+    public static final ResultVo SUCCESS = new ResultVo(STATUS_SUCCESS, StringUtil.BLANK, null);
+
+    public static final ResultVo ERROR = new ResultVo(STATUS_ERROR, StringUtil.BLANK, null);
 
     private Integer status;
 
