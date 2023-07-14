@@ -20,6 +20,12 @@ public class ResultVo {
 
     public static final ResultVo ERROR = new ResultVo(STATUS_ERROR, StringUtil.BLANK, null);
 
+    public static final ResultVo ERROR_LOGIN = createError("登录失败或过期");
+
+    public static ResultVo createError(String message) {
+        return new ResultVo(STATUS_ERROR, message, null);
+    }
+
     private Integer status;
 
     private String message;
