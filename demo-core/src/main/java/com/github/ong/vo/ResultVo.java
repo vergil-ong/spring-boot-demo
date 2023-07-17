@@ -26,6 +26,14 @@ public class ResultVo {
         return new ResultVo(STATUS_ERROR, message, null);
     }
 
+    public static ResultVo createSuccess(Object data, String message) {
+        return new ResultVo(STATUS_SUCCESS, message, data);
+    }
+
+    public static ResultVo createSuccess(Object data) {
+        return createSuccess(data, null);
+    }
+
     private Integer status;
 
     private String message;
