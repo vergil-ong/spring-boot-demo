@@ -26,7 +26,11 @@ public class GoodsCategoryService {
     private GoodsCategoryDao goodsCategoryDao;
 
     public Page<GoodsCategoryVo> goodsCategoryPage(GoodsQo goodsQo) {
-        Page<GoodsCategory> categoryPage = goodsCategoryDao.findAllByParentId(GoodsCategory.PARENT_ROOT, goodsQo.getPageRequest());
+        Long parentId = goodsQo.getParentId();
+        if (Objects.isNull(parentId)) {
+            parentId = GoodsCategory.PARENT_ROOT;
+        }
+        Page<GoodsCategory> categoryPage = goodsCategoryDao.findAllByParentId(parentId, goodsQo.getPageRequest());
         if (categoryPage.getTotalElements() <= NumberUtil.ZERO_L) {
             return GoodsUtil.getCategoryPage(categoryPage);
         }
@@ -50,13 +54,14 @@ public class GoodsCategoryService {
         GoodsCategory goodsCategory = goodsCategoryDao.getReferenceById(id);
         CommonPageQo commonPageQo = new CommonPageQo();
         Page<GoodsCategory> categoryPage = goodsCategoryDao.findAllByParentId(id, commonPageQo.getPageRequest());
+        goodsCategoryDao.delete(goodsCategory);
         if (categoryPage.getTotalElements() <= NumberUtil.ZERO_L) {
-            goodsCategoryDao.delete(goodsCategory);
+            return;
         }
 
         Set<Long> deleteIdSet = new HashSet<>();
         Set<Long> parentIdSet = new HashSet<>();
-        for (int i = 1; i <= categoryPage.getTotalPages(); i++) {
+        for (int i = 0; i < categoryPage.getTotalPages(); i++) {
             commonPageQo.setPage(i);
             categoryPage = goodsCategoryDao.findAllByParentId(id, commonPageQo.getPageRequest());
             Set<Long> currentIdSet = GoodsUtil.getIdSet(categoryPage);
@@ -68,7 +73,7 @@ public class GoodsCategoryService {
             Set<Long> tempIdSet = new HashSet<>();
             parentIdSet.forEach( parentId -> {
                 CommonPageQo pageQo = new CommonPageQo();
-                Page<GoodsCategory> categoryPageForParent = goodsCategoryDao.findAllByParentId(id, pageQo.getPageRequest());
+                Page<GoodsCategory> categoryPageForParent = goodsCategoryDao.findAllByParentId(parentId, pageQo.getPageRequest());
 
                 if (categoryPageForParent.getTotalElements() <= NumberUtil.ZERO_L) {
                     return;
@@ -88,5 +93,13 @@ public class GoodsCategoryService {
         if (!CollectionUtils.isEmpty(deleteIdSet)){
             goodsCategoryDao.deleteAllById(deleteIdSet);
         }
+    }
+
+    public GoodsCategory getParentGoodsCategory(GoodsCategory goodsCategory) {
+        Long parentId = goodsCategory.getParentId();
+        if (Objects.isNull(parentId) || Objects.equals(parentId, GoodsCategory.PARENT_ROOT)) {
+            return null;
+        }
+        return goodsCategoryDao.getReferenceById(parentId);
     }
 }

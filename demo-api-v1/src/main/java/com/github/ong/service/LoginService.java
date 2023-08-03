@@ -21,7 +21,7 @@ public class LoginService {
     @Resource
     private JsonHelper jsonHelper;
 
-    public static final String TOKEN_HEADER = "token_auth";
+    public static final String TOKEN_HEADER = "Authtoken";
 
     public LoginUser getUserByToken(HttpServletRequest request) {
         if (Objects.isNull(request)) {

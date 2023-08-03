@@ -8,7 +8,7 @@ import org.springframework.data.domain.PageRequest;
 @Setter
 public class CommonPageQo {
 
-    private Integer page = 1;
+    private Integer page = 0;
 
     private Integer pageSize = 10;
 

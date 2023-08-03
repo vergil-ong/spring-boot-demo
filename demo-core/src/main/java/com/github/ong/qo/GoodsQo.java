@@ -7,4 +7,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class GoodsQo extends CommonPageQo {
+
+    private Long parentId;
 }

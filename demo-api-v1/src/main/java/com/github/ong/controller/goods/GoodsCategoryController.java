@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.Objects;
 
 @RestController
 @Slf4j
@@ -34,7 +35,14 @@ public class GoodsCategoryController {
         log.info("addCategory qo is {}", LogUtil.logObject(goodsCategory));
         goodsCategory.setUpdateTime(new Date());
         GoodsCategory savedEntity = goodsCategoryService.addGoodsCategory(goodsCategory);
-        return ResultVo.createSuccess(savedEntity);
+        GoodsCategoryVo goodsCategoryVo = new GoodsCategoryVo();
+        goodsCategoryVo.setGoodsCategory(savedEntity);
+        GoodsCategory parentGoodsCategory = goodsCategoryService.getParentGoodsCategory(savedEntity);
+        if (Objects.nonNull(parentGoodsCategory)) {
+            goodsCategoryVo.setAddedParentId(parentGoodsCategory.getParentId());
+        }
+
+        return ResultVo.createSuccess(goodsCategoryVo);
     }
 
     @PutMapping("/update")

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.ong.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.stereotype.Component;
 
@@ -16,6 +17,9 @@ public class JsonHelper {
     private ObjectMapper objectMapper;
 
     public <T> T getBean(String content, Class<T> valueType) {
+        if (StringUtils.isBlank(content)) {
+            return null;
+        }
         try {
             return objectMapper.readValue(content, valueType);
         } catch (Exception e) {

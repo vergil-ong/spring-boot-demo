@@ -16,9 +16,9 @@ spring:
       settings:
         web-allow-others: true
       path: /h2-console
-#  sql:
-#    init:
-#      schema-locations: classpath:db/h2/schema.sql
-#      data-locations: classpath:db/h2/data.sql
+  sql:
+    init:
+      schema-locations: classpath:h2/schema.sql
+      data-locations: classpath:h2/data.sql
 
 

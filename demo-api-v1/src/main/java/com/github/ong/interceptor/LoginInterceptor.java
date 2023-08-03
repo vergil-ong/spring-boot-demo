@@ -6,6 +6,8 @@ import com.github.ong.service.LoginService;
 import com.github.ong.service.common.JsonHelper;
 import com.github.ong.vo.ResultVo;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.resource.ResourceHttpRequestHandler;
@@ -32,6 +34,11 @@ public class LoginInterceptor implements HandlerInterceptor {
             return  true;
         }
 
+        String method = request.getMethod();
+        if (StringUtils.equals(method, HttpMethod.OPTIONS.name())) {
+            return true;
+        }
+
         LoginUser loginUser = loginService.getUserByToken(request);
         if (Objects.nonNull(loginUser)){
             return true;
@@ -39,6 +46,9 @@ public class LoginInterceptor implements HandlerInterceptor {
         log.info("loginUser is null");
 
         response.setHeader("Content-Type", "application/json;charset=UTF-8");
+        response.setHeader("Access-Control-Allow-Credentials", "true");
+        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT,OPTIONS");
+        response.setHeader("Access-Control-Allow-Headers", "*");
         try (PrintWriter writer = response.getWriter()){
             writer.write(jsonHelper.getString(ResultVo.ERROR_LOGIN));
             writer.flush();

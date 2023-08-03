@@ -11,4 +11,6 @@ public class GoodsCategoryVo {
     private GoodsCategory goodsCategory;
 
     private boolean hasChildren = false;
+
+    private Long addedParentId;
 }
